@@ -1,1 +1,96 @@
+<!-- ============================== чат с виджетом перевода от Гугл, версия 02 ==================================== -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Поддержка DSE — Чат с переводом</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    #chat-window {
+      border: 1px solid #ccc;
+      background: #fff;
+      padding: 10px;
+      height: 300px;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+    }
+    .message {
+      margin: 5px 0;
+      padding: 6px 10px;
+      border-radius: 10px;
+      max-width: 75%;
+    }
+    .support {
+      background: #d0ebff;
+      align-self: flex-start;
+    }
+    .client {
+      background: #e2f7dc;
+      align-self: flex-end;
+      text-align: right;
+    }
+    #controls {
+      display: flex;
+      gap: 5px;
+    }
+    #translate-btn {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Чат поддержки DSE</h2>
+<p id="lang-info"></p>
+<button id="translate-btn">Перевести чат</button>
+<div id="google_translate_element" style="margin-bottom: 15px;"></div>
+
+<div id="chat-window"></div>
+
+<div id="controls">
+  <input type="text" id="user-input" placeholder="Введите сообщение..." style="flex:1"/>
+  <button onclick="sendMessage()">Отправить</button>
+</div>
+
+<script>
+  const userLang = navigator.language || navigator.userLanguage;
+  const userLangShort = userLang.split('-')[0];
+  const supportLang = 'ru';
+
+  document.getElementById("lang-info").innerText = `Язык вашего собеседника: ${supportLang === userLangShort ? 'тот же, что и у вас' : (supportLang === 'ru' ? 'русский' : supportLang)}`;
+
+  function sendMessage() {
+    const input = document.getElementById("user-input");
+    const msg = input.value.trim();
+    if (!msg) return;
+    addMessage(msg, 'support');
+    input.value = '';
+  }
+
+  function addMessage(text, sender) {
+    const div = document.createElement("div");
+    div.className = `message ${sender}`;
+    div.textContent = `${sender === "support" ? "Support DSE" : "Клиент"}: ${text}`;
+    document.getElementById("chat-window").appendChild(div);
+    document.getElementById("chat-window").scrollTop = document.getElementById("chat-window").scrollHeight;
+  }
+</script>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ru',
+      includedLanguages: 'ru,ro,en,uk,pl,de,fr,it,es',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
 
